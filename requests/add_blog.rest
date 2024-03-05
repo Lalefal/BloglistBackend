@@ -2,8 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Toka Testi",
+  "title": "kolmasviides3 1Testinen",
   "author": "Keijo Kirjailija",
-  "url": "jotaintänne",
-  "likes": 0
+  "url": "jotaintänne"
 }
