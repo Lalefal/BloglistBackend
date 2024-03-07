@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhZmFsIiwiaWQiOiI2NWU4NzcyMDMwZDcwMWYzN2Y4ZjNlNGQiLCJpYXQiOjE3MDk3OTU3Mjd9.Wb13BCaqK-zkc9V0nKgfMR9mTff-rMZM8nrLzgT7GY8 
+Authorization: Bearer
 
 {
-  "title": "blogin lisääminen 53",
+  "title": "blogin lisääminen 3",
   "author": "mluukkai",
   "url": "https://fullstackopen.com/osa4/token_perustainen_kirjautuminen#tehtavat-4-15-4-23"
 }

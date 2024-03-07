@@ -38,10 +38,9 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
-  response.json(savedBlog)
-  //response.status(201).json(savedBlog)
+  //response.json(savedBlog)
+  response.status(201).json(savedBlog)
 })
-
 
 //DELETE by id
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
@@ -58,16 +57,36 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 })
 
 //PUT
-blogsRouter.put('/:id', async (req, res) => {
+blogsRouter.put('/:id', userExtractor, async (req, res) => {
+  const user = req.user
   const { title, author, url, likes } = req.body
+  const blog = await Blog.findById(req.params.id)
+  if (!blog) {
+    return res.status(404).json({ error: 'blog not found' })
+  }
+  if (blog.user.toString() !== user._id.toString()) {
+    return res.status(401).json({ error: 'unauthorized' })
+  }
 
   const updatedBlog = await Blog.findByIdAndUpdate(
-    { _id: req.params.id },
+    req.params.id, //{ _id: req.params.id },
     { title, author, url, likes },
     { new: true, context: 'query' }
   )
   res.json(updatedBlog)
 })
+
+// //PUT
+// blogsRouter.put('/:id', async (req, res) => {
+//   const { title, author, url, likes } = req.body
+
+//   const updatedBlog = await Blog.findByIdAndUpdate(
+//     { _id: req.params.id },
+//     { title, author, url, likes },
+//     { new: true, context: 'query' }
+//   )
+//   res.json(updatedBlog)
+// })
 
 module.exports = blogsRouter
 

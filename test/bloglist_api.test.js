@@ -11,7 +11,7 @@ const Blog = require('../models/blog')
 //tee testi: jos pyynnön mukana ei ole tokenia, uuden blogin lisäys ei onnistu,
 //ja pyyntö palauttaa oikean statuskoodin 401 Unauthorized
 
-describe('when there is initially some notes saved', () => {
+describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(helper.initialBlogs)
@@ -33,9 +33,6 @@ describe('when there is initially some notes saved', () => {
     const firstBlog = response.body[0]
     assert.ok(firstBlog.id)
     assert.strictEqual(firstBlog._id, undefined)
-
-    //const response = await api.get('/api/blogs')
-    //assert.strictEqual(response._id, undefined)
   })
 })
 describe('addition of a new note', () => {
@@ -122,14 +119,14 @@ describe('deletion of a blog', () => {
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
   })
 
-  beforeEach(async () => {
-    await Blog.deleteMany({})
-    console.log('cleared')
+  // beforeEach(async () => {
+  //   await Blog.deleteMany({})
+  //   console.log('cleared')
 
-    const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
-    const promiseArray = blogObjects.map(blog => blog.save())
-    await Promise.all(promiseArray)
-  })
+  //   const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
+  //   const promiseArray = blogObjects.map(blog => blog.save())
+  //   await Promise.all(promiseArray)
+  // })
 })
 
 describe('Updating a blog', () => {
