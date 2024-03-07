@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 const logger = require('./logger')
 
 const requestLogger = (request, response, next) => {
@@ -11,6 +13,33 @@ const requestLogger = (request, response, next) => {
 //unknownEndpoint
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// // tokenin ekstraktointi
+// const tokenExtractor = (request, response, next) => {
+//   const authorization = request.get('authorization')
+//   if (authorization && authorization.startsWith('Bearer ')) {
+//     request.token = authorization.replace('Bearer ', '')
+//   }
+
+//   next()
+// }
+
+//selvittää pyyntöön liittyvän userin ja sijoittaa sen request-olioon
+const userExtractor = async (request, response, next) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    request.token = authorization.replace('Bearer ', '')
+  }
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (decodedToken.id) {
+    request.user = await User.findById(decodedToken.id)
+  }
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  next()
 }
 
 const errorHandler = (error, request, response, next) => {
@@ -38,7 +67,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).json({ error: 'token missing or invalid' })
   } else if (error.name === 'TokenExpiredError') {
     return response.status(401).json({
-      error: 'token expired'
+      error: 'token expired',
     })
   }
 
@@ -46,6 +75,8 @@ const errorHandler = (error, request, response, next) => {
 }
 
 module.exports = {
+  //tokenExtractor,
+  userExtractor,
   requestLogger,
   unknownEndpoint,
   errorHandler,

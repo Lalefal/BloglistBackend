@@ -7,6 +7,10 @@ const api = supertest(app)
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
 
+//2.23 korjaa token-kirjautumisen hajottamat testit
+//tee testi: jos pyynnön mukana ei ole tokenia, uuden blogin lisäys ei onnistu,
+//ja pyyntö palauttaa oikean statuskoodin 401 Unauthorized
+
 describe('when there is initially some notes saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -102,7 +106,7 @@ describe('addition of a new note', () => {
   })
 })
 
-describe('deletion of a note', () => {
+describe('deletion of a blog', () => {
   //4.13 blogin poistaminen ja deleten testaaminen
   test('a blog can be deleted', async () => {
     const blogsAtStart = await helper.blogsInDb()
