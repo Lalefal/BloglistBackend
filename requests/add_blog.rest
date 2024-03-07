@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+//Authorization: Bearer 
 
 {
-  "title": "kolmasviides3 1Testinen",
-  "author": "Keijo Kirjailija",
-  "url": "jotaintänne"
+  "title": "Blogin lisääminen tokenin kanssa",
+  "author": "mluukkai",
+  "url": "https://fullstackopen.com/osa4/token_perustainen_kirjautuminen"
 }

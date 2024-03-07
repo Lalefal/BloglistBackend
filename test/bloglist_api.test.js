@@ -86,6 +86,20 @@ describe('addition of a new note', () => {
     const response = await api.get('/api/blogs')
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
   })
+
+  test('blog with too short title is not added', async () => {
+    const newBlog = {
+      title: 'this',
+      author: 'Ihaa ja Ruu',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 4,
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+    const response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, helper.initialBlogs.length)
+  })
 })
 
 describe('deletion of a note', () => {
