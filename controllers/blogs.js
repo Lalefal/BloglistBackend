@@ -1,9 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-//const userExtractor = require('../utils/middleware')
 const { userExtractor } = require('../utils/middleware')
-//const User = require('../models/user')
-//const jwt = require('jsonwebtoken')
 
 //GET
 blogsRouter.get('/', async (request, response) => {
@@ -36,9 +33,9 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     user: user._id,
   })
   const savedBlog = await blog.save()
+  await savedBlog.populate('user', { username: 1, name: 1 })
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
-  //response.json(savedBlog)
   response.status(201).json(savedBlog)
 })
 
@@ -70,23 +67,11 @@ blogsRouter.put('/:id', userExtractor, async (req, res) => {
 
   const updatedBlog = await Blog.findByIdAndUpdate(
     req.params.id, //{ _id: req.params.id },
-    { title, author, url, likes },
+    { title, author, url, likes, user: user._id },
     { new: true, context: 'query' }
-  )
+  ).populate('user', { username: 1, name: 1 })
   res.json(updatedBlog)
 })
-
-// //PUT
-// blogsRouter.put('/:id', async (req, res) => {
-//   const { title, author, url, likes } = req.body
-
-//   const updatedBlog = await Blog.findByIdAndUpdate(
-//     { _id: req.params.id },
-//     { title, author, url, likes },
-//     { new: true, context: 'query' }
-//   )
-//   res.json(updatedBlog)
-// })
 
 module.exports = blogsRouter
 
@@ -98,45 +83,3 @@ module.exports = blogsRouter
 //   }
 //   return null
 // }
-
-// blogsRouter.delete('/:id', async (req, res) => {
-//   await Blog.findByIdAndDelete(req.params.id)
-//   res.status(204).end()
-// })
-
-// blogsRouter.put('/:id', async (req, res) => {
-//   const body = req.body
-//   const blog = {
-//     title: body.title,
-//     author: body.author,
-//     url: body.url,
-//     likes: body.likes,
-//   }
-
-//   const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
-//     new: true,
-//   })
-//   res.json(updatedBlog)
-// })
-
-// blog
-//   .save()
-//   .then(savedBlog => {
-//     response.status(201).json(savedBlog)
-//   })
-//   .catch(error => next(error))
-//GET
-// blogsRouter.get('/', (request, response) => {
-//   Blog.find({}).then(blogs => {
-//     response.json(blogs)
-//   })
-// })
-
-//POST
-// blogsRouter.post('/', (request, response) => {
-//   const blog = new Blog(request.body)
-
-//   blog.save().then(result => {
-//     response.status(201).json(result)
-//   })
-// })

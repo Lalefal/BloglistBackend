@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
-//const Blog = require('../models/blog')
 
 //GET
 usersRouter.get('/', async (request, response) => {
@@ -9,6 +8,7 @@ usersRouter.get('/', async (request, response) => {
     title: 1,
     author: 1,
     url: 1,
+    likes: 1,
   })
   response.json(users)
 })
@@ -19,6 +19,7 @@ usersRouter.get('/:id', async (req, res) => {
     title: 1,
     author: 1,
     url: 1,
+    likes: 1,
   })
   if (user) {
     res.json(user)

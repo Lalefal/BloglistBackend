@@ -15,16 +15,6 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-// // tokenin ekstraktointi
-// const tokenExtractor = (request, response, next) => {
-//   const authorization = request.get('authorization')
-//   if (authorization && authorization.startsWith('Bearer ')) {
-//     request.token = authorization.replace('Bearer ', '')
-//   }
-
-//   next()
-// }
-
 //selvittää pyyntöön liittyvän userin ja sijoittaa sen request-olioon
 const userExtractor = async (request, response, next) => {
   const authorization = request.get('authorization')
@@ -75,9 +65,18 @@ const errorHandler = (error, request, response, next) => {
 }
 
 module.exports = {
-  //tokenExtractor,
   userExtractor,
   requestLogger,
   unknownEndpoint,
   errorHandler,
 }
+
+// // tokenin ekstraktointi
+// const tokenExtractor = (request, response, next) => {
+//   const authorization = request.get('authorization')
+//   if (authorization && authorization.startsWith('Bearer ')) {
+//     request.token = authorization.replace('Bearer ', '')
+//   }
+
+//   next()
+// }
