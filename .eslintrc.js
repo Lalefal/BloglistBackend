@@ -1,11 +1,9 @@
 module.exports = {
   env: {
-    browser: true,
     commonjs: true,
     es2021: true,
+    node: true,
   },
-  plugins: ['@stylistic/js'],
-  extends: 'eslint:recommended',
   overrides: [
     {
       env: {
@@ -17,6 +15,8 @@ module.exports = {
       },
     },
   ],
+  plugins: ['@stylistic/js'],
+  extends: 'eslint:recommended',
   parserOptions: {
     ecmaVersion: 'latest',
   },
